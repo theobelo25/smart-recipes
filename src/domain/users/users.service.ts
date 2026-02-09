@@ -3,6 +3,8 @@ import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { User } from 'generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { PaginationDto } from '../../common/dto/pagination.dto.js';
+import { DEFAULT_PAGE_SIZE } from '../../common/util/common.constants.js';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +14,13 @@ export class UsersService {
     return await this.prisma.user.create({ data: createUserDto });
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(paginationDto: PaginationDto) {
+    const { limit, offset } = paginationDto;
+
+    return await this.prisma.user.findMany({
+      skip: offset,
+      take: limit ?? DEFAULT_PAGE_SIZE.USERS,
+    });
   }
 
   async findOne(id: number) {
