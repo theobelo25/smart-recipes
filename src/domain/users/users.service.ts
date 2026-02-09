@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
-import { User } from 'generated/prisma/client.js';
+import { User } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { PaginationDto } from '../../common/dto/pagination.dto.js';
 import { DEFAULT_PAGE_SIZE } from '../../common/util/common.constants.js';
