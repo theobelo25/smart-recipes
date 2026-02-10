@@ -6,6 +6,7 @@ import { CommonModule } from './common/common.module.js';
 import { EnvModule } from './env/env.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module.js';
+import { AjvModule } from './ajv/ajv.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module.js';
     EnvModule,
     ConfigModule.forRoot(),
     AuthModule,
+    AjvModule,
   ],
   controllers: [AppController],
   providers: [AppService],

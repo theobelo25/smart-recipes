@@ -5,7 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module.js';
-import { PrismaClientExceptionFilter } from './prisma-client-exception/prisma-client-exception.filter.js';
+import { PrismaClientExceptionFilter } from './filters/prisma-client-exception/prisma-client-exception.filter.js';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
