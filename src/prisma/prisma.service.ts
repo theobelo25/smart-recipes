@@ -10,7 +10,7 @@ export class PrismaService extends PrismaClient {
     const adapter = new PrismaPg({
       connectionString: configService.get<string>('DATABASE_URL'),
     });
-    super({ adapter });
+    super({ adapter, omit: { user: { password: true } } });
   }
 
   async onModuleInit() {
