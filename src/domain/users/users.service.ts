@@ -5,15 +5,18 @@ import { User } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { PaginationDto } from '../../common/dto/pagination.dto.js';
 import { DEFAULT_PAGE_SIZE } from '../../common/util/common.constants.js';
-import { genSalt, hash } from 'bcryptjs';
+import { HashingService } from '../../auth/hashing/hashing.service.js';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hashingService: HashingService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User | null> {
     const { password } = createUserDto;
-    const hashedPassword = await this.hashPassword(password);
+    const hashedPassword = await this.hashingService.hash(password);
     const user = await this.prisma.user.create({
       data: { ...createUserDto, password: hashedPassword },
     });
@@ -36,7 +39,8 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const { password } = updateUserDto;
-    const hashedPassword = password && (await this.hashPassword(password));
+    const hashedPassword =
+      password && (await this.hashingService.hash(password));
 
     const user = await this.prisma.user.update({
       where: { id },
@@ -49,10 +53,5 @@ export class UsersService {
 
   async remove(id: number) {
     return await this.prisma.user.delete({ where: { id } });
-  }
-
-  private async hashPassword(password: string) {
-    const salt = await genSalt(12);
-    return hash(password, salt);
   }
 }
