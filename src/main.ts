@@ -7,6 +7,7 @@ import {
 import { AppModule } from './app.module.js';
 import { PrismaClientExceptionFilter } from './filters/prisma-client-exception/prisma-client-exception.filter.js';
 import { ConfigService } from '@nestjs/config';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -16,6 +17,12 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('APP_PORT');
+  const jwtSecret = configService.get<string>('JWT_SECRET');
+
+  // Register cookie for jwt
+  await app.register(fastifyCookie, {
+    secret: jwtSecret, // A secret is recommended for signed cookies
+  });
 
   // Handle PrismaClientKnownException Errors
   const httpAdapter = app.get(HttpAdapterHost);
