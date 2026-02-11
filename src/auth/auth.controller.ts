@@ -13,7 +13,7 @@ import { LocalAuthGuard } from './guards/local-auth/local-auth.guard.js';
 import { User } from './decorators/user.decorator.js';
 import { type RequestUser } from './interfaces/request-user.interface.js';
 import { type FastifyReply } from 'fastify';
-import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard.js';
+import { Public } from './decorators/public.decorator.js';
 
 @Controller('auth')
 export class AuthController {
@@ -21,6 +21,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
+  @Public()
   @Post('login')
   login(
     @User() user: RequestUser,
@@ -34,7 +35,6 @@ export class AuthController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@User() { id }: RequestUser) {
     return this.authService.getProfile(id);
