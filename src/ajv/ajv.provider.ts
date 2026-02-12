@@ -8,7 +8,7 @@ const addFormats = ajvFormats as unknown as Plugin<FormatsPluginOptions>;
 export const ajvProvider: Provider = {
   provide: 'AJV', // Custom injection token
   useFactory: () => {
-    const ajv = new Ajv({ allErrors: true }); // Configure AJV as needed
+    const ajv = new Ajv({ allErrors: true, $data: true }); // Configure AJV as needed
     // Add custom formats, keywords, or parsers here
     addFormats(ajv);
     addErrors(ajv);
